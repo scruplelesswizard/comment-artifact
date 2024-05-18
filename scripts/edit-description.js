@@ -21,7 +21,7 @@ module.exports = async ({ inputs, github, context }) => {
     const LINK_DESCRIPTION = escapeMarkdown(inputs["description"]);
 
     const PULL_NUMBER = context.issue.number;
-    const RUN_ID = context.runId;
+    const RUN_ID = context.payload.workflow_run.id;
     const { owner, repo } = context.repo;
 
     let link = "";
