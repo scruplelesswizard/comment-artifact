@@ -35,17 +35,17 @@ function escapeMarkdown(text) {
 }
 
 module.exports = async ({ inputs, github, context }) => {
-    const PULL_NUMBER = context.issue.number;
     const ARTIFACT_NAME = inputs["name"];
     const LINK_DESCRIPTION = escapeMarkdown(inputs["description"]);
+
+    const PULL_NUMBER = context.issue.number;
+    const RUN_ID = context.runId;
+    const { owner, repo } = context.repo;
 
     let link = "";
     let body_message = "";
 
-    const { owner, repo } = context.repo;
-    const run_id = github.event.workflow_run.id;
-
-    link = await getArtifactLink(ARTIFACT_NAME, owner, repo, run_id);
+    link = await getArtifactLink(ARTIFACT_NAME, owner, repo, RUN_ID);
     body_message = `[${LINK_DESCRIPTION}](${link})\n`;
 
     const HORIZONTAL_LINE = `\r\n\r\n<!-- comment-artifact separator start -->\r\n----\r\n<!-- comment-artifact separator end -->`;
