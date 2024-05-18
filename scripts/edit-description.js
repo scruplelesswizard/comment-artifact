@@ -1,4 +1,4 @@
-async function getArtifactLink(artifactName, owner, repo, run_id) {
+async function getArtifactLink(artifactName, github, owner, repo, run_id) {
     // get the list of artifacts
     const artifacts = await github.paginate(
         github.rest.actions.listWorkflowRunArtifacts, { owner, repo, run_id }
@@ -45,7 +45,7 @@ module.exports = async ({ inputs, github, context }) => {
     let link = "";
     let body_message = "";
 
-    link = await getArtifactLink(ARTIFACT_NAME, owner, repo, RUN_ID);
+    link = await getArtifactLink(ARTIFACT_NAME, github, owner, repo, RUN_ID);
     body_message = `[${LINK_DESCRIPTION}](${link})\n`;
 
     const HORIZONTAL_LINE = `\r\n\r\n<!-- comment-artifact separator start -->\r\n----\r\n<!-- comment-artifact separator end -->`;
