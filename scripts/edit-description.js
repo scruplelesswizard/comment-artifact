@@ -1,21 +1,3 @@
-async function getArtifactLink(artifactName, github, owner, repo, run_id) {
-    // get the list of artifacts
-    const artifacts = await github.paginate(
-        github.rest.actions.listWorkflowRunArtifacts, { owner, repo, run_id }
-    );
-
-    if (!artifacts.length) {
-        return core.error(`No artifacts found`);
-    }
-
-    for (const artifact of artifacts) {
-        if (artifact.name == artifactName) {
-            return `https://nightly.link/${owner}/${repo}/actions/artifacts/${artifact.id}.zip`;
-        }
-    }
-    return core.error(`failed to find ${artifactName} artifact`);
-}
-
 function escapeMarkdown(text) {
     return text
         .replace(/\\/g, '\\\\') // Escape backslashes
@@ -45,7 +27,23 @@ module.exports = async ({ inputs, github, context }) => {
     let link = "";
     let body_message = "";
 
-    link = await getArtifactLink(ARTIFACT_NAME, github, owner, repo, RUN_ID);
+    // get the list of artifacts
+    const artifacts = await github.paginate(
+        github.rest.actions.listWorkflowRunArtifacts, { owner, repo, run_id }
+    );
+
+    if (!artifacts.length) {
+        return core.error(`No artifacts found`);
+    }
+
+    for (const artifact of artifacts) {
+        if (artifact.name == ARTIFACT_NAME) {
+            link = `https://nightly.link/${owner}/${repo}/actions/artifacts/${artifact.id}.zip`;
+        }
+    }
+    if (link == "") {
+        return core.error(`failed to find ${ARTIFACT_NAME} artifact`);
+    }
     body_message = `[${LINK_DESCRIPTION}](${link})\n`;
 
     const HORIZONTAL_LINE = `\r\n\r\n<!-- comment-artifact separator start -->\r\n----\r\n<!-- comment-artifact separator end -->`;
