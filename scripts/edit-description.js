@@ -19,10 +19,12 @@ function escapeMarkdown(text) {
 module.exports = async ({ inputs, github, context }) => {
     const ARTIFACT_NAME = inputs["name"];
     const LINK_DESCRIPTION = escapeMarkdown(inputs["description"]);
+    const RUN_ID = inputs["name"];
 
     const PULL_NUMBER = context.issue.number;
-    const RUN_ID = github.run_id;
     const { owner, repo } = context.repo;
+
+    console.info(`RUN_ID: ${RUN_ID}, ${PULL_NUMBER}, ${owner}, ${repo}`);
 
     let link = "";
     let body_message = "";

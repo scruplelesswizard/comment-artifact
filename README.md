@@ -12,16 +12,24 @@ documentation.
 ![Example of a description edited with link to download
 artifacts](pull-request-example.png)
 
-## How to use it
+# Usage
 
-Add a new action after the upload-artifact action in an already existing [GitHub
-Action](https://docs.github.com/en/actions) in your repository where you uploaded an
-artifact using the [upload-artifact](https://github.com/actions/upload-artifact).
 
 ```yaml
 - uses: PicoCentauri/comment-artifact@v1
   with:
-    name: "ARTIFACT_NAME"
+    # Name of artifact defined using the
+    # Default is 'artifact'
+    name:
+
+    # Description of link text that should appear in the updated comment of your
+    # pull request. Default is 'Download artifact for this pull request'.
+    description:
+
+    # The id of the workflow run where the desired download artifact was uploaded from.
+    # Optional. Default is ${{ github.run_id }}
+    run-id:
+
 ```
 
 To allow to update the comment update the
@@ -35,18 +43,3 @@ permissions:
 
 Once you added this to your repository, next time anybody opens a Pull
 Request, the description will be edited to include the link to one or more artifacts.
-
-> Note that **_you have to_ replace `ARTIFACT_NAME` the correct name of your uploaded
-> artifact.**.
-
-You can as many comments as you like. They will be stacked within the comment section of
-the pull request.
-
-## Configuration
-
-These are all the parameters this action supports:
-* `name` (_optional_): Name of artifact defined using the
-  [upload-artifact](https://github.com/actions/upload-artifact) action. (default:
-  `artifact`)
-* `description` (_optional_): Description of link text that should appear in the updated
-  comment of your pull request. (default: `Download artifact for this pull request`)
