@@ -22,7 +22,7 @@ runs:
     - uses: actions/checkout@v4
       with:
         repository: "PicoCentauri/comment-artifact"
-        ref: "v0.1.6"
+        ref: "v0.1.7"
 
     - name: "Comment on Pull Request with link to an artifact"
       uses: actions/github-script@v7
