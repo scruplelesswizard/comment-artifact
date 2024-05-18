@@ -16,18 +16,19 @@ function escapeMarkdown(text) {
         .replace(/!/g, '\\!');  // Escape exclamation mark
 }
 
-module.exports = async ({ inputs, github, context }) => {
+module.exports = async ({ inputs, github, context, core }) => {
     const ARTIFACT_NAME = inputs["name"];
     const LINK_DESCRIPTION = escapeMarkdown(inputs["description"]);
-    const RUN_ID = inputs["name"];
+    const RUN_ID = context.runId;
 
     const PULL_NUMBER = context.issue.number;
+    const WORKFLOW_NAME = context.workflow;
     const { owner, repo } = context.repo;
-
-    console.info(`RUN_ID: ${RUN_ID}, ${PULL_NUMBER}, ${owner}, ${repo}`);
 
     let link = "";
     let body_message = "";
+
+    console.log(`Owner: ${owner}, Repo: ${repo}, Run ID: ${RUN_ID}`);
 
     // get the list of artifacts
     const artifacts = await github.paginate(
@@ -62,8 +63,8 @@ module.exports = async ({ inputs, github, context }) => {
         body = HORIZONTAL_LINE;
     }
 
-    const MESSAGE_SEPARATOR_START = `\r\n\r\n<!-- download-section ${workflow_name} ${ARTIFACT_NAME} start -->\r\n`;
-    const MESSAGE_SEPARATOR_END = `\r\n<!-- download-section ${workflow_name} ${ARTIFACT_NAME} end -->`;
+    const MESSAGE_SEPARATOR_START = `\r\n\r\n<!-- download-section ${WORKFLOW_NAME} ${ARTIFACT_NAME} start -->\r\n`;
+    const MESSAGE_SEPARATOR_END = `\r\n<!-- download-section ${WORKFLOW_NAME} ${ARTIFACT_NAME} end -->`;
 
     const { data: pull } = await github.rest.pulls.get({
         owner: owner,

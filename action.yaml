@@ -7,6 +7,9 @@ branding:
   icon: "paperclip"
 
 inputs:
+  github-token:
+    description: 'The GitHub token used to authenticate with the GitHub API.'
+    required: true
   name:
     description: "Name of the artifact to link."
     default: "artifact"
@@ -15,10 +18,6 @@ inputs:
     description: "Description of the artifact download link."
     default: "Download artifact for this pull request"
     required: false
-  run-id:
-    description: "The id of the workflow run where the desired download artifact was uploaded from."
-    required: false
-    default: ${{ github.event.workflow_run.id }}
 
 runs:
   using: "composite"
@@ -31,11 +30,11 @@ runs:
     - name: "Comment on Pull Request with link to an artifact"
       uses: actions/github-script@v7
       with:
+        github-token: ${{ inputs.github-token }}
         script: |
           const inputs = {
             "name": "${{ inputs.name }}",
             "description": `${{ inputs.description }}`,
-            "run-id": `${{ inputs.run-id }}`,
           }
           const script = require("./scripts/edit-description.js");
-          await script({inputs, github, context});
+          await script({inputs, github, context, core});
