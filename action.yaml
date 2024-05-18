@@ -8,11 +8,11 @@ branding:
 
 inputs:
   name:
-    description: "Name of the uploaded artifact"
+    description: "Name of the artifact to link."
     default: "artifact"
     required: false
   description:
-    description: "Description of the artifact download link"
+    description: "Description of the artifact download link."
     default: "Download artifact for this pull request"
     required: false
 
@@ -22,7 +22,7 @@ runs:
     - uses: actions/checkout@v4
       with:
         repository: "PicoCentauri/comment-artifact"
-        ref: "v0.1.8"
+        ref: "main"
 
     - name: "Comment on Pull Request with link to an artifact"
       uses: actions/github-script@v7

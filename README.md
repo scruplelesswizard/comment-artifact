@@ -45,8 +45,8 @@ the pull request.
 ## Configuration
 
 These are all the parameters this action supports:
-* `name` (_optional_): Name of artifact you defined using the
+* `name` (_optional_): Name of artifact defined using the
   [upload-artifact](https://github.com/actions/upload-artifact) action. (default:
   `artifact`)
-* `description` (_optional_): Description of link text that should appear in the updated comment
-  of your pull request. (default: `Download artifact for this pull request`)
+* `description` (_optional_): Description of link text that should appear in the updated
+  comment of your pull request. (default: `Download artifact for this pull request`)
