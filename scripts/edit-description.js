@@ -29,7 +29,7 @@ module.exports = async ({ inputs, github, context }) => {
 
     // get the list of artifacts
     const artifacts = await github.paginate(
-        github.rest.actions.listWorkflowRunArtifacts, { owner, repo, run_id }
+        github.rest.actions.listWorkflowRunArtifacts, { owner, repo, RUN_ID }
     );
 
     if (!artifacts.length) {
